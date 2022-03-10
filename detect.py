@@ -26,8 +26,7 @@ parser.add_argument('--img-size', type=int, default=640, help='inference size (p
 opt = parser.parse_args()
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = load_model(opt.weights, device)
-detect_one(model, opt.image, device)
+model = detect_face.load_model(opt.weights, device)
 
 detect_face.detect_one(model, opt.image, device)
 
