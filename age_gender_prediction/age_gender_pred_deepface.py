@@ -26,18 +26,19 @@ def find_agebucket(age):
 
 def calculate_gender(image):
     person={}
-    path = image_path
-    try:
+    #path = image_path
         #img_arr=cv2.imread(path)
-        img_arr = img_arr[:,:,[2,1,0]]
-        ## get gender
-        response=DeepFace.analyze(img_arr,actions=["gender","age"],enforce_detection=False)
-        gender = response['gender']
-        age = response['age']
-        ## Bucket the age
-        agebucket = find_agebucket(age)
+    #image.squeeze()
+    img_arr = image
+    ## get gender
+    response=DeepFace.analyze(img_arr,actions=["gender","age"],enforce_detection=False)
+    gender = response['gender']
+    age = response['age']
+    ## Bucket the age
+    agebucket = find_agebucket(age)
         ## store in dictionary
-        person[image_path] = {'gender':gender, 'age': age, 'agebucket': agebucket}
-    except:
-        person[image_path]='NA' ## If the image is not a front facing image
+        #person[image_path] = {'gender':gender, 'age': age, 'agebucket': agebucket}
+    # except:
+    #      pass
+        #person[image_path]='NA' ## If the image is not a front facing image
     return gender , age , agebucket

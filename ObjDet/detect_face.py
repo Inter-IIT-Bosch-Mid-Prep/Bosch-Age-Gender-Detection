@@ -9,6 +9,7 @@ import torch
 import torch.backends.cudnn as cudnn
 from numpy import random
 import copy
+import numpy as np
 
 from ObjDet.models.experimental import attempt_load
 from ObjDet.utils.datasets import letterbox
@@ -21,6 +22,7 @@ from Super_Resolution.sr_gan.model.edsr import edsr
 from Super_Resolution.sr_gan.model import resolve_single
 
 from age_gender_prediction import age_gender_pred_deepface
+
 
 def load_model(weights, device):
     model = attempt_load(weights, map_location=device)  # load FP32 model
@@ -52,7 +54,7 @@ def scale_coords_landmarks(img1_shape, coords, img0_shape, ratio_pad=None):
     coords[:, 9].clamp_(0, img0_shape[0])  # y5
     return coords
 
-def show_results(sr_model, img, xywh, conf, landmarks, class_num, j, img_path):
+def show_results(img, xywh, conf, landmarks, class_num, j, img_path, sr_model):
 
 
 
@@ -79,15 +81,14 @@ def show_results(sr_model, img, xywh, conf, landmarks, class_num, j, img_path):
     tf = max(tl - 1, 1)  # font thickness
     label = str(conf)[:5]
 
-    sr_img = sr_model(img[y1:y2,x1:x2])
-    
+    sr_img = sr_model(np.expand_dims(img[y1:y2,x1:x2], axis=0))
+    #np.squeeze(sr_img)
+    sr_img = np.array(sr_img[0])
     gender , age , agebucket = age_gender_pred_deepface.calculate_gender(sr_img)
 
-    # cv2.putText(img, label, (x1, y1 - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+    #cv2.putText(img, label, (x1, y1 - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
     #print(img_path[:-5] + '/cut'+ str(j) +'.jpg')
-    #cv2.imwrite('/content/output/'+ img_path[-13:-4]  + '/cut'+ str(j) +'.jpg', img[y1:y2,x1:x2])
-
-
+    cv2.imwrite('/content/output/'+ img_path[-13:-4]  + '/cut'+ str(j) +'.jpg', img[y1:y2,x1:x2])
     return img
 
 
@@ -155,7 +156,7 @@ def detect_one(model, image_path, device, depth, scale, model_gan_path):
                 landmarks = (det[j, 5:15].view(1, 10) / gn_lks).view(-1).tolist()
                 class_num = det[j, 15].cpu().numpy()
                 print(j)
-                orgimg = show_results(model_gan, orgimg, xywh, conf, landmarks, class_num, j, image_path)
+                orgimg = show_results(orgimg, xywh, conf, landmarks, class_num, j, image_path, sr_model = model_gan)
 
     cv2.imwrite('result.jpg', orgimg)
 
