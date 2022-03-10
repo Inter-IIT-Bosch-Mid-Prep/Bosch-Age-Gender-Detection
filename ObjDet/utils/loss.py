@@ -3,8 +3,8 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from utils.general import bbox_iou
-from utils.torch_utils import is_parallel
+from ObjDet.utils.general import bbox_iou
+from ObjDet.utils.torch_utils import is_parallel
 
 
 def smooth_BCE(eps=0.1):  # https://github.com/ultralytics/yolov3/issues/238#issuecomment-598028441
