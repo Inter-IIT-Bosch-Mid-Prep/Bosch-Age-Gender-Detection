@@ -28,6 +28,6 @@ opt = parser.parse_args()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = detect_face.load_model(opt.weights, device)
 
-detect_face.detect_one(model, opt.image, device)
+detect_face.detect_one(model, opt.image, device, depth=16, scale=4)
 
 
