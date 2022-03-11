@@ -158,7 +158,7 @@ def detect_one(model, image_path, device, depth, scale, model_gan_path, output_f
                 print(j)
                 orgimg = show_results(orgimg, xywh, conf, landmarks, class_num, j, image_path, sr_model = model_gan)
     
-    output_path = output_folder + 'result.jpg'
+    output_path = output_folder + '/result.jpg'
     print(output_path)
     cv2.imwrite( output_path , orgimg)
 
