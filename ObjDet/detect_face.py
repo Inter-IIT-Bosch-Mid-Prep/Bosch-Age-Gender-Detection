@@ -58,8 +58,8 @@ def show_results(img, xywh, conf, landmarks, class_num, j, img_path, sr_model):
 
 
 
-    if path.exists(img_path[:-5]) == False:
-         os.mkdir(img_path[:-5])
+    # if path.exists(img_path[:-5]) == False:
+    #      os.mkdir(img_path[:-5])
     h,w,c = img.shape
     tl = 1 or round(0.002 * (h + w) / 2) + 1  # line/font thickness
     x1 = int(xywh[0] * w - 0.5 * xywh[2] * w)
@@ -79,21 +79,21 @@ def show_results(img, xywh, conf, landmarks, class_num, j, img_path, sr_model):
     #     cv2.circle(img, (point_x, point_y), tl+1, clors[i], -1)
 
     tf = max(tl - 1, 1)  # font thickness
-    label = str(conf)[:5]
+    #label = str(conf)[:5]
 
     sr_img = sr_model(np.expand_dims(img[y1:y2,x1:x2], axis=0))
     #np.squeeze(sr_img)
     sr_img = np.array(sr_img[0])
     gender , age , agebucket = age_gender_pred_deepface.calculate_gender(sr_img)
-
-    #cv2.putText(img, label, (x1, y1 - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+    label = "age: " + str(age) + ", gender:" + str(gender)
+    cv2.putText(img, label, (x1, y1 - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
     #print(img_path[:-5] + '/cut'+ str(j) +'.jpg')
-    cv2.imwrite('/content/output/'+ img_path[-13:-4]  + '/cut'+ str(j) +'.jpg', img[y1:y2,x1:x2])
+    #cv2.imwrite('/content/output/'+ img_path[-13:-4]  + '/cut'+ str(j) +'.jpg', img[y1:y2,x1:x2])
     return img
 
 
 
-def detect_one(model, image_path, device, depth, scale, model_gan_path):
+def detect_one(model, image_path, device, depth, scale, model_gan_path, output_folder, frame_num):
     # Load model
     img_size = 800
     conf_thres = 0.3
@@ -102,7 +102,8 @@ def detect_one(model, image_path, device, depth, scale, model_gan_path):
     model_gan = edsr(scale=scale, num_res_blocks=depth)
     model_gan.load_weights(model_gan_path)
 
-    orgimg = cv2.imread(image_path)  # BGR
+    #orgimg = cv2.imread(image_path)  # BGR
+    orgimg = image_path
     img0 = copy.deepcopy(orgimg)
     assert orgimg is not None, 'Image Not Found ' + image_path
     h0, w0 = orgimg.shape[:2]  # orig hw
@@ -157,6 +158,8 @@ def detect_one(model, image_path, device, depth, scale, model_gan_path):
                 class_num = det[j, 15].cpu().numpy()
                 print(j)
                 orgimg = show_results(orgimg, xywh, conf, landmarks, class_num, j, image_path, sr_model = model_gan)
-
-    cv2.imwrite('result.jpg', orgimg)
+    
+    output_path = output_folder + '/frame_' + str(frame_num) + '.jpg'
+    print(output_path)
+    cv2.imwrite( output_path , orgimg)
 
