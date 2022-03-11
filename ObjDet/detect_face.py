@@ -58,8 +58,8 @@ def show_results(img, xywh, conf, landmarks, class_num, j, img_path, sr_model):
 
 
 
-    if path.exists(img_path[:-5]) == False:
-         os.mkdir(img_path[:-5])
+    # if path.exists(img_path[:-5]) == False:
+    #      os.mkdir(img_path[:-5])
     h,w,c = img.shape
     tl = 1 or round(0.002 * (h + w) / 2) + 1  # line/font thickness
     x1 = int(xywh[0] * w - 0.5 * xywh[2] * w)
