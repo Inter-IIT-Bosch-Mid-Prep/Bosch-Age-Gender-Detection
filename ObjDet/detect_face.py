@@ -86,8 +86,8 @@ def show_results(img, xywh, conf, landmarks, class_num, j, img_path, sr_model):
     sr_img = sr_model(np.expand_dims(img[y1:y2,x1:x2], axis=0))
     #np.squeeze(sr_img)
     sr_img = np.array(sr_img[0])
-    backends = ['opencv', 'ssd', 'dlib', 'mtcnn', 'retinaface', 'mediapipe']
-    sr_img = DeepFace.detectFace(img_path = "face_alignment.jpeg", target_size = (224, 224), detector_backend = backends[0])
+    #backends = ['opencv', 'ssd', 'dlib', 'mtcnn', 'retinaface', 'mediapipe']
+    #sr_img = DeepFace.detectFace(img_path = "face_alignment.jpeg", target_size = (224, 224), detector_backend = backends[0])
     gender , age , agebucket = age_gender_pred_deepface.calculate_gender(sr_img)
     label = "age: " + str(age) + ", gender:" + str(gender)
     cv2.putText(img, label, (x1, y1 - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)

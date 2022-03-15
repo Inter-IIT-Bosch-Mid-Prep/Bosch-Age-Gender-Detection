@@ -23,10 +23,10 @@ from ObjDet import detect_face
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--weights', nargs='+', type=str, default='runs/train/exp5/weights/last.pt', help='path to weights of YOLO_V5')
-parser.add_argument('--video', type=str, default='data/images/test.avi', help='source')  # file/folder, 0 for webcam
+parser.add_argument('--weights', nargs='+', type=str, default='yolov5n-0.5.pt', help='path to weights of YOLO_V5')
+parser.add_argument('--video', type=str, default='test.mp4', help='source')  # file/folder, 0 for webcam
 parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
-parser.add_argument('--weights_gan', type=str, default ='runs/train/exp5/weights/last.pt', help='model.pt path(s) for gan')
+parser.add_argument('--weights_gan', type=str, default ='edsr_weights/weights/weights.h5', help='model.pt path(s) for gan')
 parser.add_argument('--output_folder', type=str, default ='runs/train/output/', help='path to save output image')
 
 
