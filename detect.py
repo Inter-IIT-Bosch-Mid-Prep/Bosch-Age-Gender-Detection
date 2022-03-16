@@ -4,6 +4,7 @@ from pathlib import Path
 import os.path
 from os import path
 import cv2
+import ffmpeg
 import torch
 import torch.backends.cudnn as cudnn
 from numpy import random
@@ -15,7 +16,7 @@ sys.path.insert(0, './ObjDet')
 from ObjDet.models.experimental import attempt_load
 from ObjDet.utils.datasets import letterbox
 from ObjDet.utils.general import check_img_size, non_max_suppression_face, apply_classifier, scale_coords, xyxy2xywh, \
-    strip_optimizer, set_logging, increment_path
+	strip_optimizer, set_logging, increment_path
 from ObjDet.utils.plots import plot_one_box
 from ObjDet.utils.torch_utils import select_device, load_classifier, time_synchronized
 from ObjDet import detect_face
@@ -46,24 +47,25 @@ p = 0
 s = time.time()
 while(cap.isOpened()):
     ret, frame = cap.read()
-     
+    
     # This condition prevents from infinite looping
     # incase video ends.
     if ret == False:
-        break
-     
+      break
+    
     # Save Frame by Frame into disk using imwrite method
+    # cv2.imwrite('/content/frames/'+str(i)+'.jpg',frame)
     #cv2.imwrite("/content/drive/MyDrive/INTER_IIT_DRIVE/yolov5-face/test_frames/" + 'Frame'+str(i)+'.jpg',frame)
+    # print(int(ffmpeg.probe(opt.video)["streams"][0]["tags"]["rotate"]))
+    frame = cv2.rotate(frame,cv2.cv2.ROTATE_90_CLOCKWISE if int(ffmpeg.probe(opt.video)["streams"][0]["tags"]["rotate"]) == 90 else cv2.cv2.ROTATE_90_COUNTERCLOCKWISE)
     detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan, output_folder=opt.output_folder, frame_num=i)
     i += 1
     print(i)
-    #cv2.imshow('frames',frame)
-    cv2.waitKey(1)
-    #break
+	#cv2.imshow('frames',frame)
+	# cv2.waitKey(1)
+	#break
  
 cap.release()
 cv2.destroyAllWindows()
 
 # detect_face.detect_one(model, opt.image, device, depth=16, scale=4, model_gan_path=opt.weights_gan, output_folder=opt.output_folder)
-
-
