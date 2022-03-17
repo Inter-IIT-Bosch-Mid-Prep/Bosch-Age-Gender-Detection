@@ -20,11 +20,27 @@
   feed (like mall, retail store, hospital etc.). Consider low resolution cameras as well as 
   cameras put at a height for surveillance.
 
+# Installation
 
+1. Clone the repository  
+    ```bash 
+    git clone https://github.com/Inter-IIT-Bosch-Mid-Prep/Bosch-Age-Gender-Detection-IITKGP.git
+    ```
+2. Run the following command to create the proper conda environment with all the required dependencies  
+    ```bash 
+    cd Bosch-Age-Gender-Detection-IITKGP 
+    conda env create -f env.yml
+    ```
 # How To Run
-    python --weights <PATH_TO_WEIGHTS_of_YOLO_V%5 --video <PATH_TO_VIDEO> --img-size <INFERENCE_SIZE_IN_PIXELS> --weight_gan <PATH_TO_WEIGHTS_OF_GAN> --output_folder <PATH_TO_SAVE_OUTPUT_IMAGES>
+To run the entire pipeline on a single video you can use the below command  
+    ```bash 
+    python detect.py --weights <PATH_TO_WEIGHTS_of_YOLO_V%5 --video <PATH_TO_VIDEO> --img-size <INFERENCE_SIZE_IN_PIXELS> --weight_gan <PATH_TO_WEIGHTS_OF_GAN> --output_folder <PATH_TO_SAVE_OUTPUT_IMAGES>
+    ```
+By default 
 
-# Venv To Run The Code
+
+
+<!-- # Venv To Run The Code
     $ conda create --name age_and_gender_detection python=3.8
     $ conda activate age_and_gender_detection
     $ pip install opencv-python
@@ -35,7 +51,7 @@
     $ conda install -c anaconda pandas
     $ conda install -c anaconda seaborn
     $ pip install tensorflow
-    $ pip install deepface
+    $ pip install deepface -->
 
 # File Structure
 
