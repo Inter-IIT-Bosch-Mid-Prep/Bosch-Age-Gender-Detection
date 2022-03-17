@@ -166,9 +166,11 @@
 > ### Motion Blur Removal:
     The images we are targeting are sometimes blurred due to motion (like the person moving, etc). 
     In order to tackle that we used MRPNet, a synergistic design model that can optimally balance 
-    between spatial details and high-level contextualized information while recovering images. Specifically, our model first learns the contextualized features using encoder-decoder 
+    between spatial details and high-level contextualized information while recovering images. 
+    Specifically, our model first learns the contextualized features using encoder-decoder 
     architectures and later combines them with a high-resolution branch that retains local information. 
-    A key ingredient in such a multi-stage architecture is the information exchange between different stages.
+    A key ingredient in such a multi-stage architecture is the information exchange between different 
+    stages.
 
 ![](imgs/Deblurring.jpg)
 
@@ -214,8 +216,10 @@
     The major changes between SRCNN and FSRCNN is that there is no pre-processing or upsampling 
     at the beginning. The feature extraction took place in the low-resolution space​. A 1×1 
     convolution is used after the initial 5×5 convolution to reduce the number of channels, 
-    and hence ​lesser computation and memory, similar to how the Inception network is developed​. Multiple 3×3 convolutions are used, instead of having a big convolutional filter, similar 
-    to how the VGG network works by simplifying the architecture to reduce the number of parameters.​ Upsampling is done by using a learned deconvolutional filter, thus improving the model. 
+    and hence ​lesser computation and memory, similar to how the Inception network is developed​. 
+    Multiple 3×3 convolutions are used, instead of having a big convolutional filter, similar 
+    to how the VGG network works by simplifying the architecture to reduce the number of parameters.​ 
+    Upsampling is done by using a learned deconvolutional filter, thus improving the model. 
     FSRCNN ultimately achieves better results than SRCNN, while also being faster.
 
 ![](imgs/FSRCNN.jpg)
@@ -256,12 +260,12 @@
 >> ### With GANs:
 >>> #### SRGAN:
 
-SRGAN uses a GAN-based architecture to generate visually pleasing images. It uses the SRResnet 
-network architecture as a backend, and employs a multi-task loss to refine the results. The 
-loss consists of three terms taking into consideration the pixel similarity (MSE Loss), 
-Perceptual similarity Loss and an Adversrial loss by a discriminator. Although the results 
-obtained had comparatively lower PSNR values, the model achieved more MOS, i.e a better 
-perceptual quality in the results. 
+    SRGAN uses a GAN-based architecture to generate visually pleasing images. It uses the SRResnet 
+    network architecture as a backend, and employs a multi-task loss to refine the results. The 
+    loss consists of three terms taking into consideration the pixel similarity (MSE Loss), 
+    Perceptual similarity Loss and an Adversrial loss by a discriminator. Although the results 
+    obtained had comparatively lower PSNR values, the model achieved more MOS, i.e a better 
+    perceptual quality in the results. 
 ![](imgs/SRGAN.jpg)
 
 >>> #### ESRGAN:
@@ -277,18 +281,20 @@ perceptual quality in the results.
 >> ### Single Stage Residual Network:
 >>> #### EDSR:
 
-  The EDSR architecture is based on the SRResNet architecture, consisting of multiple residual 
-  blocks. The residual block in EDSR is shown above. The major difference from SRResNet is that 
-  the Batch Normalization layers are removed. The author states that BN normalizes the input, 
-  thus limiting the range of the network; removal of BN results in an improvement in accuracy. 
-  The BN layers also consume memory, and removing them leads to up to a 40% memory reduction, 
-  making the network training more efficient. 
+    The EDSR architecture is based on the SRResNet architecture, consisting of multiple residual 
+    blocks. The residual block in EDSR is shown above. The major difference from SRResNet is that 
+    the Batch Normalization layers are removed. The author states that BN normalizes the input, 
+    thus limiting the range of the network; removal of BN results in an improvement in accuracy. 
+    The BN layers also consume memory, and removing them leads to up to a 40% memory reduction, 
+    making the network training more efficient. 
 ![](imgs/EDSR.jpg) 
 
 >>> #### WDSR:
 
-    This is a model with same parameters and computational budgets as EDSR, but with wider features before ReLU activation and has significantly better for single image super resolution (SISR). 
-    A new linear low-rank convolution is introduced into the SR network which gives better accuracy-efficiency tradeoff. In addition, compared with batch normalization or no 
+    This is a model with same parameters and computational budgets as EDSR, but with wider features
+    before ReLU activation and has significantly better for single image super resolution (SISR). 
+    A new linear low-rank convolution is introduced into the SR network which gives better 
+    accuracy-efficiency tradeoff. In addition, compared with batch normalization or no 
     normalization, training with weight normalization leads to better accuracy for deep 
     super-resolution networks
 ![](imgs/WDSR.jpg)
