@@ -180,7 +180,11 @@ By default
 > ### Imageaug (contrast, rain, exposure, sunlight, etc.) {Not yet added in pipeline will be done by tomorrow and added here as well , Anant}]
     text to be added
 > ### Motion Blur Removal:
-    The images we are targeting are sometimes blurred due to motion (like the person moving, etc). In order to tackle that we used MRPNet, a synergistic design model that can optimally balance between spatial details and high-level contextualized information while recovering images. Specifically, our model first learns the contextualized features using encoder-decoder architectures and later combines them with a high-resolution branch that retains local information. A key ingredient in such a multi-stage architecture is the information exchange between different stages.
+    The images we are targeting are sometimes blurred due to motion (like the person moving, etc). 
+    In order to tackle that we used MRPNet, a synergistic design model that can optimally balance 
+    between spatial details and high-level contextualized information while recovering images. Specifically, our model first learns the contextualized features using encoder-decoder 
+    architectures and later combines them with a high-resolution branch that retains local information. 
+    A key ingredient in such a multi-stage architecture is the information exchange between different stages.
 
 ![](imgs/Deblurring.jpg)
 
@@ -198,12 +202,24 @@ By default
     little about early upsampling design
 >>> #### SRCNN:
 
-    SRCNN is a simple CNN architecture consisting of three layers: one for patch extraction, non-linear mapping,​ and reconstruction. The patch extraction layer is used to extract dense patches from the input, and to represent​ them using convolutional filters. The non-linear mapping layer consists of 1×1 convolutional filters used to change the ​number of channels and add non-linearity. As you might have guessed, the final reconstruction layer reconstructs the high-resolution image.
+    SRCNN is a simple CNN architecture consisting of three layers: one for patch extraction, 
+    non-linear mapping,​ and reconstruction. The patch extraction layer is used to extract dense 
+    patches from the input, and to represent​ them using convolutional filters. The non-linear 
+    mapping layer consists of 1×1 convolutional filters used to change the ​number of channels 
+    and add non-linearity. As you might have guessed, the final reconstruction layer reconstructs 
+    the high-resolution image.
 
  ![](imgs/SRCNN.jpg)
 >>> #### VDSR:
 
-    Very Deep Super Resolution (VDSR) is an improvement on SRCNN, with the addition of the following​ features. As the name signifies, a deep network with small 3×3 convolutional filters ​is used instead of a smaller network with large convolutional filters. This is based on the VGG architecture. The network tries to learn the residual of the output image and the interpolated input, rather​ than learning the direct mapping (like SRCNN), as shown in the figure above. This simplifies the task. The initial low-resolution image is added to the network output to get the final HR output. Gradient clipping is used to train the deep network with higher learning rates.
+    Very Deep Super Resolution (VDSR) is an improvement on SRCNN, with the addition of the 
+    following​ features. As the name signifies, a deep network with small 3×3 convolutional 
+    filters ​is used instead of a smaller network with large convolutional filters. This is 
+    based on the VGG architecture. The network tries to learn the residual of the output image 
+    and the interpolated input, rather​ than learning the direct mapping (like SRCNN), as shown 
+    in the figure above. This simplifies the task. The initial low-resolution image is added to 
+    the network output to get the final HR output. Gradient clipping is used to train the deep 
+    network with higher learning rates.
 
 ![](imgs/VDSR.jpg)
 
@@ -211,20 +227,40 @@ By default
     little about late upsampling design
 >>> #### FSRCNN:
 
-    The major changes between SRCNN and FSRCNN is that there is no pre-processing or upsampling at the beginning. The feature extraction took place in the low-resolution space​. A 1×1 convolution is used after the initial 5×5 convolution to reduce the number of channels, and hence ​lesser computation and memory, similar to how the Inception network is developed​. Multiple 3×3 convolutions are used, instead of having a big convolutional filter, similar to how the VGG network works by simplifying the architecture to reduce the number of parameters.​ Upsampling is done by using a learned deconvolutional filter, thus improving the model. FSRCNN ultimately achieves better results than SRCNN, while also being faster.
+    The major changes between SRCNN and FSRCNN is that there is no pre-processing or upsampling 
+    at the beginning. The feature extraction took place in the low-resolution space​. A 1×1 
+    convolution is used after the initial 5×5 convolution to reduce the number of channels, 
+    and hence ​lesser computation and memory, similar to how the Inception network is developed​. Multiple 3×3 convolutions are used, instead of having a big convolutional filter, similar 
+    to how the VGG network works by simplifying the architecture to reduce the number of parameters.​ Upsampling is done by using a learned deconvolutional filter, thus improving the model. 
+    FSRCNN ultimately achieves better results than SRCNN, while also being faster.
 
 ![](imgs/FSRCNN.jpg)
 
 >>> #### ESPCN:
 
-    ESPCN introduces the concept of sub-pixel convolution to replace the deconvolutional layer for ​upsampling.This is done in order to resolve the checkerboard issue in deconvolution, which occurs due to the overlap​ operation of convolution as well as is computationally efficient compared to deconvolution in high resolution space. As seen in the diagram below, sub-pixel convolution works by translating depth to space. In a high resolution image, pixels from numerous channels in a low resolution image are reassembled into a single channel. For example, a 5x5x4 pixel input image can be converted to a 10x10 HR image by rearranging the pixels in the final four channels to a single channel.
+    ESPCN introduces the concept of sub-pixel convolution to replace the deconvolutional layer 
+    for ​upsampling.This is done in order to resolve the checkerboard issue in deconvolution, 
+    which occurs due to the overlap​ operation of convolution as well as is computationally 
+    efficient compared to deconvolution in high resolution space. As seen in the diagram below, 
+    sub-pixel convolution works by translating depth to space. In a high resolution image, pixels 
+    from numerous channels in a low resolution image are reassembled into a single channel. 
+    For example, a 5x5x4 pixel input image can be converted to a 10x10 HR image by rearranging 
+    the pixels in the final four channels to a single channel.
 
 ![](imgs/ESPCN.jpg)
 
 >> ### Densely connected Networks
 >>> #### RDN:
 
-    Most deep CNN based SR models do not make full use of the hierarchical features from the original low-resolution (LR) images, thereby achieving relatively-low performance. A Residual Dense Network (RDN) is used to tackle this in image SR by exploiting the hierarchical features from all the convolutional layers. A Residual Dense Block (RDB) is used to extract abundant local features via dense connected convolutional layers. RDB further allows direct connections from the state of preceding RDB to all the layers of current RDB, leading to a contiguous memory (CM) mechanism. Local feature fusion in RDB is then used to adaptively learn more effective features from preceding and current local features and stabilizes the training of wider network.
+    Most deep CNN based SR models do not make full use of the hierarchical features from the 
+    original low-resolution (LR) images, thereby achieving relatively-low performance. A Residual 
+    Dense Network (RDN) is used to tackle this in image SR by exploiting the hierarchical features 
+    from all the convolutional layers. A Residual Dense Block (RDB) is used to extract abundant 
+    local features via dense connected convolutional layers. RDB further allows direct connections 
+    from the state of preceding RDB to all the layers of current RDB, leading to a contiguous 
+    memory (CM) mechanism. Local feature fusion in RDB is then used to adaptively learn more 
+    effective features from preceding and current local features and stabilizes the training 
+    of wider network.
 
 ![](imgs/RDN.jpg)
 
@@ -236,24 +272,41 @@ By default
 >> ### With GANs:
 >>> #### SRGAN:
 
-SRGAN uses a GAN-based architecture to generate visually pleasing images. It uses the SRResnet network architecture as a backend, and employs a multi-task loss to refine the results. The loss consists of three terms taking into consideration the pixel similarity (MSE Loss), Perceptual similarity Loss and an Adversrial loss by a discriminator. Although the results obtained had comparatively lower PSNR values, the model achieved more MOS, i.e a better perceptual quality in the results. 
+SRGAN uses a GAN-based architecture to generate visually pleasing images. It uses the SRResnet 
+network architecture as a backend, and employs a multi-task loss to refine the results. The 
+loss consists of three terms taking into consideration the pixel similarity (MSE Loss), 
+Perceptual similarity Loss and an Adversrial loss by a discriminator. Although the results 
+obtained had comparatively lower PSNR values, the model achieved more MOS, i.e a better 
+perceptual quality in the results. 
 ![](imgs/SRGAN.jpg)
 
 >>> #### ESRGAN:
 
-    ESRGAN improves on top of SRGAN by adding a relativistic discriminator. The advantage is that the network is trained not only to tell which image is true or fake, but also to make real images look less real compared to the generated images, thus helping to fool the discriminator. Batch normalization in SRGAN is also removed, and Dense Blocks (inspired from DenseNet) are used for better information flow. These Dense Blocks are called RRDB.
+    ESRGAN improves on top of SRGAN by adding a relativistic discriminator. The advantage is 
+    that the network is trained not only to tell which image is true or fake, but also to make 
+    real images look less real compared to the generated images, thus helping to fool the 
+    discriminator. Batch normalization in SRGAN is also removed, and Dense Blocks (inspired 
+    from DenseNet) are used for better information flow. These Dense Blocks are called RRDB.
 
 ![](imgs/ESRGAN.jpg)
 
 >> ### Single Stage Residual Network:
 >>> #### EDSR:
 
-  The EDSR architecture is based on the SRResNet architecture, consisting of multiple residual blocks. The residual block in EDSR is shown above. The major difference from SRResNet is that the Batch Normalization layers are removed. The author states that BN normalizes the input, thus limiting the range of the network; removal of BN results in an improvement in accuracy. The BN layers also consume memory, and removing them leads to up to a 40% memory reduction, making the network training more efficient. 
+  The EDSR architecture is based on the SRResNet architecture, consisting of multiple residual 
+  blocks. The residual block in EDSR is shown above. The major difference from SRResNet is that 
+  the Batch Normalization layers are removed. The author states that BN normalizes the input, 
+  thus limiting the range of the network; removal of BN results in an improvement in accuracy. 
+  The BN layers also consume memory, and removing them leads to up to a 40% memory reduction, 
+  making the network training more efficient. 
 ![](imgs/EDSR.jpg) 
 
 >>> #### WDSR:
 
-    This is a model with same parameters and computational budgets as EDSR, but with wider features before ReLU activation and has significantly better for single image super resolution (SISR). A new linear low-rank convolution is introduced into the SR network which gives better accuracy-efficiency tradeoff. In addition, compared with batch normalization or no normalization, training with weight normalization leads to better accuracy for deep super-resolution networks
+    This is a model with same parameters and computational budgets as EDSR, but with wider features before ReLU activation and has significantly better for single image super resolution (SISR). 
+    A new linear low-rank convolution is introduced into the SR network which gives better accuracy-efficiency tradeoff. In addition, compared with batch normalization or no 
+    normalization, training with weight normalization leads to better accuracy for deep 
+    super-resolution networks
 ![](imgs/WDSR.jpg)
 
 > ## Age and Gender Prediction Models:
@@ -286,14 +339,19 @@ SRGAN uses a GAN-based architecture to generate visually pleasing images. It use
 > ## METRICS :
 >> ### For Super Resolution:
 >>> #### PSNR Value : 
-    Peak Signal to Noise Ratio is the most common technique used to determine the quality of results. It can be calculated directly from the MSE using the formula below, where L is the maximum pixel value possible (255 for an 8-bit image).
+    Peak Signal to Noise Ratio is the most common technique used to determine the quality of 
+    results. It can be calculated directly from the MSE using the formula below, where L is 
+    the maximum pixel value possible (255 for an 8-bit image).
 
 ![](imgs/PSNR.jpg)
 
 >>> #### Custom Metric : 
-    This is calculated by dividing the sum of absolute value of difference between corresponding pixels of high resolution image and image obtained by super resolution of the downsampled high resolution image by the number of pixels in the image.
+    This is calculated by dividing the sum of absolute value of difference between corresponding 
+    pixels of high resolution image and image obtained by super resolution of the downsampled 
+    high resolution image by the number of pixels in the image.
 >>> #### SSIM Value : 
-    This metric is used to compare the perceptual quality of two images using the formula below, with the mean (μ), variance (σ), and correlation (c) of both images.
+    This metric is used to compare the perceptual quality of two images using the formula below, 
+    with the mean (μ), variance (σ), and correlation (c) of both images.
 
 ![](imgs/SSIM.jpg)
 
@@ -304,20 +362,25 @@ SRGAN uses a GAN-based architecture to generate visually pleasing images. It use
 >> ### For Gender:
 
 >>> #### Accuracy:
-    Ratio of the number of correct Predictions to total number of predictions Accuracy should be as high as possible.
+    Ratio of the number of correct Predictions to total number of predictions Accuracy should be 
+    as high as possible.
 
 >>> #### Recall: 
-    Ratio of the number of true positives to the number of actual positives. Recall should be high as possible.
+    Ratio of the number of true positives to the number of actual positives. Recall should be high 
+    as possible.
 
 ![](imgs/Recall.jpg)
 
 >>> #### Precision: 
-    Ratio of the number of true positives to the number of total positive predictions. Precision should be high as possible.
+    Ratio of the number of true positives to the number of total positive predictions. Precision 
+    should be high as possible.
 
 ![](imgs/Presicion.jpg)
 
 >>> #### F1: 
-    It is difficult to compare two models with low precision and high recall or vice versa. So to make them comparable, we use F-Score. F-score helps to measure Recall and Precision at the same time. It uses Harmonic Mean in place of Arithmetic Mean by punishing the extreme values more.
+    It is difficult to compare two models with low precision and high recall or vice versa. So to 
+    make them comparable, we use F-Score. F-score helps to measure Recall and Precision at the same 
+    time. It uses Harmonic Mean in place of Arithmetic Mean by punishing the extreme values more.
 
 ![](imgs/F1.jpg)
 
@@ -335,7 +398,11 @@ SRGAN uses a GAN-based architecture to generate visually pleasing images. It use
     Root Mean Squared Error 
 ![](imgs/RMSE.jpg)
 >>> #### R-Square: 
-    R-Squared is the ratio of the sum of squares regression (SSR) and the sum of squares total (SST). Sum of Squares Regression (SSR) represents the total variation of all the predicted values found on the regression line or plane from the mean value of all the values of response variables. The sum of squares total (SST) represents the total variation of actual values from the mean value of all the values of response variables
+    R-Squared is the ratio of the sum of squares regression (SSR) and the sum of squares total (SST). 
+    Sum of Squares Regression (SSR) represents the total variation of all the predicted values found 
+    on the regression line or plane from the mean value of all the values of response variables. 
+    The sum of squares total (SST) represents the total variation of actual values from the mean 
+    value of all the values of response variables
 
 ![](imgs/Rsq.jpg)
 
