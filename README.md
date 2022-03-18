@@ -31,14 +31,14 @@
     cd Bosch-Age-Gender-Detection-IITKGP 
     conda env create -f env.yml
     ```
+3. Download the finetuned-weights from [here](https://drive.google.com/file/d/1cL4QU0jXwj60E753_fHJEJAnG8lv7LOD/view?usp=sharing) and extract it to the root folder ```${root}/```.
+4. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}/age_gender_prediction/VGGFace/```
 # How To Run
 To run the entire pipeline on a single video you can use the below command  
-    ```bash 
-    python detect.py --weights <PATH_TO_WEIGHTS_of_YOLO_V%5 --video <PATH_TO_VIDEO> --img-size <INFERENCE_SIZE_IN_PIXELS> --weight_gan <PATH_TO_WEIGHTS_OF_GAN> --output_folder <PATH_TO_SAVE_OUTPUT_IMAGES>
+    ```bash
+    python detect.py --weights <PATH_TO_WEIGHTS_of_YOLO_V5> --video <PATH_TO_VIDEO> --img-size <INFERENCE_SIZE_IN_PIXELS> --weight_gan <PATH_TO_WEIGHTS_OF_GAN> --output_folder <PATH_TO_SAVE_OUTPUT_IMAGES>
     ```
-By default 
-
-
+By default ```detect.py``` will run on test.mp4
 
 <!-- # Venv To Run The Code
     $ conda create --name age_and_gender_detection python=3.8
