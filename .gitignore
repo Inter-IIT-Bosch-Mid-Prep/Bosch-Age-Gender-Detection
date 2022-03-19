@@ -1,4 +1,9 @@
-*/__pycache__/*
+*__pycache__/
 */.ipynb_checkpoints/*
 */.div2k/*
 */.ckpt/*
+fine_tuned_utk_NDF_4.85.pt
+gender_model_weights_1.h5
+age_gender_prediction/gender_model_weights_1.h5
+fine_tuned_utk_NDF_4.85.pth
+wget-log

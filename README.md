@@ -28,15 +28,23 @@ event detection, person counting in a dense crowd, person identification, gender
     cd Bosch-Age-Gender-Detection-IITKGP 
     conda env create -f env.yml
     ```
-3. Download the finetuned-weights from [here](https://drive.google.com/file/d/1cL4QU0jXwj60E753_fHJEJAnG8lv7LOD/view?usp=sharing) and extract it to the root folder ```${root}/```.
-4. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}/age_gender_prediction/VGGFace/```
+3. Activate the conda environment  
+    ```bash 
+    conda activate bosch
+    ```
+4. Download the finetuned-weights for UTK NDF for age prediction from [here](https://drive.google.com/file/d/1cL4QU0jXwj60E753_fHJEJAnG8lv7LOD/view?usp=sharing) and extract it to the root folder ```${root}/```.
+5. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}```
 # How To Run
-To run the entire pipeline on a single video you can use the below command  
+To run the entire pipeline on a single video you can use the below command.
     ```
     python detect.py --weights <PATH_TO_WEIGHTS_of_YOLO_V5> --video <PATH_TO_VIDEO> --img-size <INFERENCE_SIZE_IN_PIXELS> --weight_gan <PATH_TO_WEIGHTS_OF_GAN> --output_folder <PATH_TO_SAVE_OUTPUT_IMAGES>
     ```   
+Note that all cofigurations are optional here. To run the etire pipeline with default configuration on test.mp4, run the following command :-
+    ```
+    python detect.py 
+    ```   
 
-By default ```detect.py``` will run on test.mp4
+<!-- By default ```detect.py``` will run on test.mp4 -->
 
 # Evaluation Datasets
 For testing our pipeline and individual blocks we have come up with some open-source datasets as well as our manually collected datasets.
