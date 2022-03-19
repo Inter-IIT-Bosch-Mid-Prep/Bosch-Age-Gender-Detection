@@ -75,7 +75,8 @@ if opt.deblur_type==0:
     model_deblur.to(device)
 
     weights = os.path.join("Deblur","MPRNet", "Deblurring", "pretrained_models", "model_"+"deblurring"+".pth")
-    load_checkpoint(model_deblur, weights, device)
+    print(weights)
+    # load_checkpoint(model_deblur, weights, device)
     model_deblur.eval()
 
 #motion deblur

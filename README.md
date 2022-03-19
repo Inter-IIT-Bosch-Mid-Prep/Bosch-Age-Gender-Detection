@@ -38,8 +38,15 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
     conda env create -f env.yml
     ```
 
-3. Download the finetuned-weights from [here](https://drive.google.com/file/d/1cL4QU0jXwj60E753_fHJEJAnG8lv7LOD/view?usp=sharing) and extract it to the root folder ```${root}/```.
-4. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}/age_gender_prediction/VGGFace/```
+3. Activate the conda environment
+
+    ```bash
+    conda activate bosch
+    ```
+
+4. Download the finetuned-weights for UTK NDF for age prediction from [here](https://drive.google.com/file/d/1cL4QU0jXwj60E753_fHJEJAnG8lv7LOD/view?usp=sharing) and extract it to the root folder ```${root}/```.
+
+5. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}```
 
 # How To Run
 
@@ -62,7 +69,11 @@ python detect.py --weights <PATH_TO_WEIGHTS_of_YOLO_V5>
                  --age_weights <PATH TO FINETUNED WEIGHTS> 
 ```
 
-By default ```detect.py``` will run on test.mp4
+Note that all cofigurations are optional here. To run the etire pipeline with default configuration on test.mp4, run the following command :-
+
+```bash
+python detect.py 
+```
 
 # Evaluation Datasets
 
@@ -138,8 +149,10 @@ From the above metrics in order to maintain a trade off between wall time and PS
 
 The entire super resolution pipeline can be shown as <p align="center">![](imgs/fftloss.png)</p>
 
-We have addressed the main pain point of the Problem statement. Just to give an overview, the existing super resolutions algorithms provided a high Peak Signal-to-Noise Ratio(PSNR) value but failed to preserve high frequency details of the image.
-Also existing super resolution algorithms are usually modifications of SRGANs which require expensive computation to train and have loss convergence issues.
+We have addressed the main pain point of the Problem statement.
+
+- Just to give an overview, the existing super resolutions algorithms provided a high Peak Signal-to-Noise Ratio(PSNR) value but failed to preserve high frequency details of the image.
+- Also existing super resolution algorithms are usually modifications of SRGANs which require expensive computation to train and have loss convergence issues.
 
 ```Thus we introduced a novel technique where we introduce a new loss in addition to exisitng reconstruction loss without introducing any new network parameters. Thus we follow the same training procedure but optimize the parameters with respect to the new loss which actually helps in preserving the high frequency components.```
 
