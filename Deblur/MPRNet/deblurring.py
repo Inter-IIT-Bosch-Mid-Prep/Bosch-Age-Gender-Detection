@@ -83,7 +83,7 @@ def restore(image, model, device):
     input_ = F.pad(input_, (0,padw,0,padh), 'reflect')
     #print("Hello")
     #print((input_).shape)
-    #cv2.imwrite( "/content/sample_data/image.png", (input_).permute(0, 2, 3, 1).cpu().detach().numpy().squeeze())
+    cv2.imwrite( "/content/sample_data/image.png", (input_).permute(0, 2, 3, 1).cpu().detach().numpy().squeeze())
     #cv2.ims
 
     with torch.no_grad():
@@ -97,7 +97,7 @@ def restore(image, model, device):
     #print("restored")
     restored = restored.permute(0, 2, 3, 1).cpu().detach().numpy()
     #print(restored.shape)
-    #cv2.imwrite( "/content/sample_data/imagerestored.png", ((restored[0]*255).astype(np.uint8)))
+    cv2.imwrite( "/content/sample_data/imagerestored.png", ((restored[0]*255).astype(np.uint8)))
     return (restored[0]*255).astype(np.uint8)
     #restored = img_as_ubyte(restored[0])
 

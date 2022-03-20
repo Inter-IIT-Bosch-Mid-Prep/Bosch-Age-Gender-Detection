@@ -21,10 +21,12 @@ from keras.models import model_from_json
 import matplotlib.pyplot as plt
 
 
-def gender_prediction(image, model):
+def gender_prediction(image, model, device):
 
-  image = np.expand_dims(cv2.resize(image, (224, 224)), axis=0)
-  return np.argmax(model(image)[0])
+  #image = np.expand_dims(cv2.resize(image, (224, 224)), axis=0)
+  #print((model(image)).shape)
+  #model = model.to(device)
+  return np.argmax(model(image), axis=1)
 
 
 

@@ -48,6 +48,10 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
 
 5. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}```
 
+6. Download the NDF finetuned weights from [here](Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}```
+
+7. Download the NDF finetuned weights from [here](Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1OVsN73CBqs0638Py5Gm6PmsmNabf0DS5/view?usp=sharing) and extract it to the ```${root}/Super_Resolution/SwinIR/experiments/pretrained_models/```
+
 # How To Run
 
 To run the entire pipeline on a single video you can use the below command  

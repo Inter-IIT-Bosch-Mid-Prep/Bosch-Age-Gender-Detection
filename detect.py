@@ -11,8 +11,12 @@ import copy
 import sys
 from runpy import run_path
 import pandas as pd
+import numpy as np
 
 sys.path.insert(0, './ObjDet')
+sys.path.insert(0, './age_gender_prediction/regression')
+sys.path.append('./age_gender_prediction/VisualizingNDF/regression')
+import age_gender_prediction.VisualizingNDF.regression.ndf as ndf
 
 from ObjDet.models.experimental import attempt_load
 from ObjDet.utils.datasets import letterbox
@@ -40,30 +44,43 @@ from deepface import DeepFace
 from age_gender_prediction.VGGFACE.vgg16_model import gender_model
 
 from age_gender_prediction.VisualizingNDF.regression.model import prepare_model
+from Super_Resolution.SwinIR import test_swin
 
+from Super_Resolution.BSRGAN import bsrgan_test
 
 parser = argparse.ArgumentParser()
+
+parser.add_argument('--v_i', type=int, default = 0, help='If 0 vedio else image')
 parser.add_argument('--weights', nargs='+', type=str, default='yolov5n-0.5.pt', help='model.pt path(s)')
-parser.add_argument('--video', type=str, default='test.mp4', help='source')  # file/folder, 0 for webcam
+parser.add_argument('--vedio_image', type=str, default='test.mp4', help='source')  # file/folder, 0 for webcam
 parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
-parser.add_argument('--weights_gan', type=str, default ='weights-edsr-16-x4-fine-tuned.h5', help='model.pt path(s) for edsr')
+parser.add_argument('--weights_gan', type=str, default ='esdr_weights/weights/edsr-16-x4/weights.h5', help='model.pt path(s) for edsr')
 #parser.add_argument('--weights_espcn', type=str, default ='runs/train/exp5/weights/last.pt', help='model.pt path(s) for espcn')
 parser.add_argument('--output_folder', type=str, default ='runs/train/output/', help='path to save output image')
 parser.add_argument('--facelib', type=bool, default =True, help='If true facelib is used else deepface for age, gender prediction')
-parser.add_argument('--bic_inter', type=int, default =0, help='If true bicubic is used else esdr for sr')
+parser.add_argument('--bic_inter', type=int, default =1, help='If true bicubic is used else esdr for sr')
 parser.add_argument('--deblur_weights', type=str, default ="./", help='Pretrained weights path for debluring models')
 parser.add_argument('--deblur_weights_restormer', type=str, default ="./Denoising/Restormer/Motion_Deblurring/motion_deblurring.pth", help='Pretrained weights path for debluring models')
 parser.add_argument('--deblur_type', type=int, default = 0, help='If 1 then restormer')
-parser.add_argument('--gender_pred', type=int, default = 0, help='If 0 then vgg_face')
-parser.add_argument('--gender_weights', type=str, default ="gender_model_weights_1.h5", help='Pretrained weights path for gender prediction')
+parser.add_argument('--gender_pred', type=int, default = 0, help='If 0 then vgg_gace')
+parser.add_argument('--gender_weights', type=str, default ="./age_gender_prediction/VGGFACE/gender_model_weights_1.h5", help='Pretrained weights path for gender prediction')
 parser.add_argument('--age_pred', type=int, default = 0, help='If 0 then ndf')
-parser.add_argument('--age_weights', type=str, default ="fine_tuned_utk_NDF_4.85.pth", help='Pretrained weights path for gender prediction')
+parser.add_argument('--age_weights', type=str, default ="cacd_pretrained_WUTK_finetuned.pth", help='Pretrained weights path for gender prediction')
+parser.add_argument('--cuda', type=bool, default=False, help='True if want to use cuda')
+
 output_dict = {"frame num":[], "person id":[], "bb_xmin":[], "bb_ymin":[], "bb_height":[], "bb_width":[], "age_min":[], "age_max":[], "age_actual":[], "gender":[] }
 
 
 opt = parser.parse_args()
+# opt.bic_inter = 3
+# print(opt.bic_inter)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# time1 = time.time()
+if opt.cuda:
+  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+else:
+  device = torch.device("cpu")
+
 model = detect_face.load_model(opt.weights, device)
 #detect_one(model, opt.image, device)
 
@@ -75,8 +92,7 @@ if opt.deblur_type==0:
     model_deblur.to(device)
 
     weights = os.path.join("Deblur","MPRNet", "Deblurring", "pretrained_models", "model_"+"deblurring"+".pth")
-    print(weights)
-    # load_checkpoint(model_deblur, weights, device)
+    load_checkpoint(model_deblur, weights, device)
     model_deblur.eval()
 
 #motion deblur
@@ -99,7 +115,7 @@ elif opt.deblur_type==1:
 
     checkpoint = torch.load(opt.deblur_weights_restormer)
     model_deblur.load_state_dict(checkpoint['params'])
-    print("===>Testing using weights: ",opt.deblur_weights_restormer)
+    #print("===>Testing using weights: ",opt.deblur_weights_restormer)
     model_deblur.to(device)
     #model_restoration = nn.DataParallel(model_restoration)
     model_deblur.eval()
@@ -109,14 +125,14 @@ else :
 #######################
 
 ############################
-age_gender_detector = AgeGenderEstimator()
+age_gender_detector = None #AgeGenderEstimator()
 ############################
 
 ########################
 
 gend_model = None
 if opt.gender_pred==0:
-  print("srgdfh")
+  #print("srgdfh")
   gender_model = gender_model(opt.gender_weights)
 
 ########################
@@ -126,20 +142,23 @@ gend_model = None
 if opt.age_pred==0:
   class OPT:
     def __init__(self):
+      #print(age)
       self.model_type = 'hybrid'
       self.num_output = 128
       self.gray_scale = False
       self.image_size = 256
-      self.pretrained = False
+      self.pretrained = True
       self.n_tree = 5
       self.tree_depth = 6
       if torch.cuda.is_available():
-        self.cuda = True  
-      else :
-        self.cuda = False
+        self.cuda = True 
+      else:
+        self.cuda = False 
   pars = OPT()
-  print("age")
+  #print("age")
   age_model = prepare_model(pars)
+  age_model=torch.load(opt.age_weights)
+  age_model = age_model.to(device).eval()
 ##############################
 
 #####load gan weights###########
@@ -150,55 +169,76 @@ if opt.bic_inter==0:
 elif opt.bic_inter==1:
   model_gan = edsr(scale=4, num_res_blocks=16)
   model_gan.load_weights(opt.weights_gan)
-  print("loaded")
+  #print("loaded")
   # model_gan.to(device)
 
 elif opt.bic_inter==2:
   model_gan = ESPCN(scale_factor = 3).to(device)
   state_dict = model_gan.state_dict()
-  print(opt.weights_gan)
+  #print(opt.weights_gan)
   for n, p in torch.load(opt.weights_gan, map_location=lambda storage, loc: storage).items():
       if n in state_dict.keys():
           state_dict[n].copy_(p)
       else:
           raise KeyError(n)
+
+elif opt.bic_inter ==3:
+  #print("HEY GHYBHDJIN")
+  model_gan = test_swin.define_model(opt.weights_gan, device, large_model=True)
+
+elif opt.bic_inter ==4:
+  #print("HEY SHANMUKH")
+  model_gan = bsrgan_test.define_model_bsrgan(opt.weights_gan, device)
 #################################
 
 
 import cv2
 import time
- 
-# Opens the inbuilt camera of laptop to capture video.
-cap = cv2.VideoCapture(opt.video)
-i = 0
-p = 0
-s = time.time()
-while(cap.isOpened()):
-    ret, frame = cap.read()
-     
-    # This condition prevents from infinite looping
-    # incase video ends.
-    if ret == False:
-        break
+time1 = time.time()
+if opt.v_i==0:
     
-    path = "/content/initial/" + "frame" +"_"+ str(i) + ".jpg"
-    cv2.imwrite(path, frame)
-     
-    # Save Frame by Frame into disk using imwrite method
-    #cv2.imwrite("/content/drive/MyDrive/INTER_IIT_DRIVE/yolov5-face/test_frames/" + 'Frame'+str(i)+'.jpg',frame)
-    output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan, output_folder=opt.output_folder, frame_num=i, age_gender = opt.facelib, sr = opt.bic_inter, model_deblur=model_deblur, deblur_type=opt.deblur_type, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
-    i += 1
-    #print(i)
-    #cv2.imshow('frames',frame)
-    #cv2.waitKey(1)
-    # if i==5 :
-    #   break
-    #break
+    # Opens the inbuilt camera of laptop to capture video.
+    cap = cv2.VideoCapture(opt.vedio_image)
+    i = 0
+    p = 0
+    s = time.time()
+    while(cap.isOpened()):
+        ret, frame = cap.read()
+        frame = cv2.resize(frame, (800, 800))
+        frame = cv2.rotate(frame, cv2.cv2.ROTATE_90_CLOCKWISE)
+        print(frame.shape)
+        
+        # This condition prevents from infinite looping
+        # incase video ends.
+        if ret == False:
+            break
+        
+        path = "/content/initial/" + "frame" +"_"+ str(i) + ".jpg"
+        cv2.imwrite(path, frame)
+        
+        # Save Frame by Frame into disk using imwrite method
+        #cv2.imwrite("/content/drive/MyDrive/INTER_IIT_DRIVE/yolov5-face/test_frames/" + 'Frame'+str(i)+'.jpg',frame)
+        output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan, output_folder=opt.output_folder, frame_num=i, age_gender = opt.facelib, sr = opt.bic_inter, model_deblur=model_deblur, deblur_type=opt.deblur_type, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
+        i += 1
+        #print(i)
+        #cv2.imshow('frames',frame)
+        #cv2.waitKey(1)
+        # if i==5 :
+        #   break
+        #break
 
+else:
+    frame = cv2.imread(opt.vedio_image)
+    output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan, output_folder=opt.output_folder, frame_num=0, age_gender = opt.facelib, sr = opt.bic_inter, model_deblur=model_deblur, deblur_type=opt.deblur_type, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
+
+
+
+time2 = time.time()
+print(time2-time1)
 df = pd.DataFrame(output_dict)
 df.to_csv('/content/sample_data/name_csv_file.csv') 
-cap.release()
-cv2.destroyAllWindows()
+#cap.release()
+#cv2.destroyAllWindows()
 
 # detect_face.detect_one(model, opt.image, device, depth=16, scale=4, model_gan_path=opt.weights_gan, output_folder=opt.output_folder)
 

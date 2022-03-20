@@ -71,8 +71,8 @@ class Tree(nn.Module):
         # also stores the determinant of the covariant matrix for efficiency
         self.factor = np.ones((self.n_leaf))       
         if not use_cuda:
-            #raise NotImplementedError
             pass
+            #raise NotImplementedError
         else:
             self.mean = Parameter(torch.from_numpy(self.mean).type(torch.FloatTensor).cuda(), requires_grad=False)
             self.covmat = Parameter(torch.from_numpy(self.covmat).type(torch.FloatTensor).cuda(), requires_grad=False)
