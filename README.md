@@ -81,7 +81,8 @@ For testing our pipeline and individual blocks we have come up with some open-so
 
 The opensource datasets can be found below and the manually collected datasets can be found [here](https://drive.google.com/drive/folders/13Qd6zlG96xXb6BZ7ETEVjeG6mnYvgZ5W?usp=sharing)
 
-<p align="center">
+
+<div align="center">
 
 | Task                      | Dataset Link                                                                                                 |
 |---------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -91,7 +92,7 @@ The opensource datasets can be found below and the manually collected datasets c
 |                           | [CACD](https://bcsiriuschen.github.io/CARC/)                                                                 |
 |                           | [Adience](https://talhassner.github.io/home/projects/Adience/Adience-data.html)                              |
 |                           | [IMDB-WIKI](https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/)                                            |
-</p>
+</div>
 We also tested our Face Detection algorithms on manually degraded UTKFace datasets for sanity checks.
 
 # Methodology
