@@ -47,12 +47,11 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
     conda activate bosch
     ```
 
-4. Make an empty directory named weights and 4 folders inside it
+4. Go to weights directory and create 2 folders inside it
 
     ```bash
-    mkdir weights
     cd weights
-    mkdir age_prediction gender_prediction gan_weights
+    mkdir age_prediction gender_prediction
     ```
 
 5. Download the NDF weights for age prediction from [here](https://drive.google.com/file/d/14qzcY89CeO6mbWetfamMWRuRNQ0OHpxY/view?usp=sharing) and extract it to the ```${root}/weights/age_prediction/```.
