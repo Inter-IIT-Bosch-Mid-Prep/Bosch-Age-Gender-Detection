@@ -29,13 +29,13 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
 1. Clone the repository  
 
     ```bash
-    git clone https://github.com/Inter-IIT-Bosch-Mid-Prep/Bosch-Age-Gender-Detection-IITKGP.git
+    git clone https://github.com/Inter-IIT-Bosch-Mid-Prep/Bosch-Age-Gender-Detection.git
     ```
 
 2. Run the following command to create the proper conda environment with all the required dependencies  
 
     ```bash
-    cd Bosch-Age-Gender-Detection-IITKGP 
+    cd Bosch-Age-Gender-Detection
     conda env create -f env.yml
     ```
 

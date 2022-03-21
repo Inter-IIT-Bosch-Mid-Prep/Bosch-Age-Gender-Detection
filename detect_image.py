@@ -48,7 +48,7 @@ parser.add_argument('--output_folder', type=str, default ='runs/train/output/', 
 parser.add_argument('--facelib', type=bool, default =True, help='If true facelib is used else deepface for age, gender prediction')
 parser.add_argument('--bic_inter', type=int, default =0, help='If true bicubic is used else esdr for sr')
 parser.add_argument('--deblur_weights', type=str, default ="./", help='Pretrained weights path for debluring models')
-parser.add_argument('--deblur_weights_restormer', type=str, default ="/content/drive/MyDrive/Bosch-Age-Gender-Detection-IITKGP-object-detection/Bosch-Age-Gender-Detection-IITKGP-object-detectionanddenoising/Denoising/Restormer/Motion_Deblurring/motion_deblurring.pth", help='Pretrained weights path for debluring models')
+parser.add_argument('--deblur_weights_restormer', type=str, default ="/content/drive/MyDrive/Bosch-Age-Gender-Detection-object-detection/Bosch-Age-Gender-Detection-object-detectionanddenoising/Denoising/Restormer/Motion_Deblurring/motion_deblurring.pth", help='Pretrained weights path for debluring models')
 parser.add_argument('--deblur_type', type=int, default = 2, help='If 1 then restormer')
 
 output_dict = {"frame num":[], "person id":[], "bb_xmin":[], "bb_ymin":[], "bb_height":[], "bb_width":[], "age_min":[], "age_max":[], "age_actual":[], "gender":[] }
