@@ -1,6 +1,8 @@
-# BOSCH’S AGE AND GENDER DETECTION
+# BOSCH’S AGE AND GENDER DETECTION - FOURIERISE - TEAM 5
 
 <!-- ![](imgs/logo.png) -->
+
+Our documentation can be found [here](https://drive.google.com/file/d/11CJIVj3UhRu33CvbxbGY8n1Ma2U0qr6X/view?usp=sharing)
 
 ## Overview
 
