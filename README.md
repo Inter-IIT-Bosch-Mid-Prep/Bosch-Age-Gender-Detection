@@ -45,7 +45,11 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
 
     ```bash
     conda activate bosch
+    sudo apt-get install git-lfs
+    git-lfs install
     ```
+
+These two commands need to be ran to avoid a unpickling error.
 
 4. Go to weights directory and create 2 folders inside it
 
@@ -63,6 +67,12 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
 8. If you want to use BSRGAN, Download the BSRGAN weights from [here](https://drive.google.com/file/d/15PEIICDU3ZNFFoiIMuBIpqch7dncQNFb/view?usp=sharing) and extract it to the ```${root}/weights/gan_weights/```
 
 # How To Run
+
+For saving output images make a folder ```output``` which is default for --output_folder
+
+```bash
+mkdir output
+```
 
 To run the entire pipeline on a single video you can use the below command  
 
@@ -90,6 +100,12 @@ Note that all cofigurations are optional here. To run the etire pipeline with de
 python detect.py 
 ```
 
+For running detect.py on image
+
+```bash
+python detect.py --run_on_image True --video_image ssd.png
+```
+
 For using our UI using streamlit, run the below command and upload the photo
 
 ```bash
@@ -102,7 +118,7 @@ We have provided support for 3 kinds of SR algorithms - EDSR, SWINIR and BSRGAN.
 2. (SwinIR)
 3. (BSRGAN)
  
-By default the output will be make in the ${root} directory in the name of name_csv_file.csv
+By default the output will be make in the ```${root}``` directory in the name of ```name_csv_file.csv``` which is configurable in --save_csv_location
 
 # Evaluation Datasets
 
