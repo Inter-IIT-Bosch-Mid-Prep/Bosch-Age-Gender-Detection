@@ -10,5 +10,6 @@ wget-log
 /weights/*
 !/weights/face_detect
 !/weights/deblur
+!/weights/gan_weights/weights.h5
 output/
 Super_Resolution/SwinIR/model_zoo/
