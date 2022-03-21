@@ -7,6 +7,8 @@ gender_model_weights_1.h5
 age_gender_prediction/VGGFACE/gender_model_weights_1.h5
 fine_tuned_utk_NDF_4.85.pth
 wget-log
-weights/
+/weights/*
+!/weights/face_detect
+!/weights/deblur
 output/
 Super_Resolution/SwinIR/model_zoo/
