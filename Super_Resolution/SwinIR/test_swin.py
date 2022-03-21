@@ -66,9 +66,3 @@ def define_model(model_path, device, large_model=True):
   model = model.to(device)
   
   return model
-
-
-
-
-
-

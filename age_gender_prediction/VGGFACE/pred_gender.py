@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 
 def gender_prediction(image, model, device):
 
-  #image = np.expand_dims(cv2.resize(image, (224, 224)), axis=0)
+  # image = np.expand_dims(cv2.resize(image, (224, 224)), axis=0)
   #print((model(image)).shape)
   #model = model.to(device)
   return np.argmax(model(image), axis=1)

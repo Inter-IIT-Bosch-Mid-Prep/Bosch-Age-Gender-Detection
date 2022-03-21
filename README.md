@@ -20,6 +20,7 @@ event detection, person counting in a dense crowd, person identification, gender
 3. [Eval Datasets](#evaluation-datasets)
 4. [Methodology](#methodology)
 5. [File Structure](#file-structure)
+6. [How to use the UI](#how-to-use-the-ui)
 
 # Installation
 
@@ -44,33 +45,33 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
     conda activate bosch
     ```
 
-4. Download the finetuned-weights for UTK NDF for age prediction from [here](https://drive.google.com/file/d/1cL4QU0jXwj60E753_fHJEJAnG8lv7LOD/view?usp=sharing) and extract it to the root folder ```${root}/```.
+4. Download the NDF weights for age prediction from [here](https://drive.google.com/file/d/14qzcY89CeO6mbWetfamMWRuRNQ0OHpxY/view?usp=sharing) and extract it to the ```${root}/weights/age_prediction/```.
 
-5. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}```
+5. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/19axDtqsPmdW7mT_Z8s8ci85YVlTtiyLO/view?usp=sharing) and extract it to the ```${root}/weights/gender_prediction/```
 
-6. Download the NDF finetuned weights from [here](Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1jbE2RDVM_oPZSs88f1kLP-k9xeGmh0AE/view?usp=sharing) and extract it to the ```${root}```
+6. If you want to use SwirIR, Download the SwinIR weights from [here](https://drive.google.com/file/d/1t0eAgSiZphK_WyWZY-y2WHyHkgQfjmDL/view?usp=sharing) and extract it to the ```${root}/weights/gan_weights/```
 
-7. Download the NDF finetuned weights from [here](Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/1OVsN73CBqs0638Py5Gm6PmsmNabf0DS5/view?usp=sharing) and extract it to the ```${root}/Super_Resolution/SwinIR/experiments/pretrained_models/```
+7. If you want to use BSRGAN, Download the BSRGAN weights from [here](https://drive.google.com/file/d/15PEIICDU3ZNFFoiIMuBIpqch7dncQNFb/view?usp=sharing) and extract it to the ```${root}/weights/gender_prediction/```
 
 # How To Run
 
 To run the entire pipeline on a single video you can use the below command  
 
 ```bash
-python detect.py --weights <PATH_TO_WEIGHTS_of_YOLO_V5>
-                 --video <PATH_TO_VIDEO>
+python detect.py --run_on_image <BOOL TO RUN ON IMAGE OR VIDEO>
+                 --weights_yolo <PATH_TO_WEIGHTS_of_YOLO_V5>
+                 --video_image <PATH_TO_VIDEO>
                  --img-size  <INFERENCE_SIZE_IN_PIXELS>  
-                 --weight_gan <PATH_TO_WEIGHTS_OF_GAN>
+                 --weights_gan <PATH_TO_WEIGHTS_OF_GAN>
                  --output_folder <PATH_TO_SAVE_OUTPUT_IMAGES>
                  --facelib <BOOL VALUE TO USE FACELIB OR NOT>
-                 --bic_inter <BOOL VALUE TO USE BICUBIC INTERPOLATION>
+                 --sr_type <1-EDSR, 2-SwinIR, 3-BSRGAN>
                  --deblur_weights <PATH TO PRETRAINED WEIGHTS>
-                 --deblur_weights_restormer <PATH TO DEBLURRING>
-                 --deblur_type <IF 1 THEN RESTORMER>
                  --gender_pred <IF 0 THEN USE VGG FACE>
                  --gender_weights <PATH OF VGG GENDER MODEL WEIGHTS>
                  --age_pred <IF VALUE 0 USE NDF>
                  --age_weights <PATH TO FINETUNED WEIGHTS> 
+                 --cuda <TRUE IF WANT TO USE CUDA>
 ```
 
 Note that all cofigurations are optional here. To run the etire pipeline with default configuration on test.mp4, run the following command :-
@@ -78,6 +79,19 @@ Note that all cofigurations are optional here. To run the etire pipeline with de
 ```bash
 python detect.py 
 ```
+
+For using our UI using streamlit, run the below command and upload the photo
+
+```bash
+streamlit run app.py
+```
+
+We have provided support for 3 kinds of SR algorithms - EDSR, SWINIR and BSRGAN. Our default used is EDSR as other two models are very heavy. This can be used by using different values of sr_type  
+
+1. (EDSR)
+2. (SwinIR)
+3. (BSRGAN)
+ 
 
 # Evaluation Datasets
 
@@ -246,3 +260,15 @@ This shows us a general increase in accuracy for age prediction in the case of E
 ├── imgs/
 ├── README.md
 ```
+
+# How to Use the UI
+
+After running the command for streamlit, a new window opens up in the default browser. This code is directly using our codebase as a backend and takes an API call for running the model. Users can choose the type of GAN from the dropdown list and then upload the image from local system. Then the processing happens in the backend and the output image is rendered with the corresponding bounding box with the age and gender information.
+
+For the help of the user, a walkthrough is shown below
+
+![](imgs/user.gif)
+
+The final prediction is shown below on a test image
+
+![](imgs/user.png)
