@@ -45,13 +45,21 @@ This repository is built in PyTorch 1.8.1 and tested on Ubuntu 20.04 environment
     conda activate bosch
     ```
 
-4. Download the NDF weights for age prediction from [here](https://drive.google.com/file/d/14qzcY89CeO6mbWetfamMWRuRNQ0OHpxY/view?usp=sharing) and extract it to the ```${root}/weights/age_prediction/```.
+4. Make an empty directory named weights and 4 folders inside it
 
-5. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/19axDtqsPmdW7mT_Z8s8ci85YVlTtiyLO/view?usp=sharing) and extract it to the ```${root}/weights/gender_prediction/```
+    ```bash
+    mkdir weights
+    cd weights
+    mkdir age_prediction gender_prediction gan_weights
+    ```
 
-6. If you want to use SwirIR, Download the SwinIR weights from [here](https://drive.google.com/file/d/1t0eAgSiZphK_WyWZY-y2WHyHkgQfjmDL/view?usp=sharing) and extract it to the ```${root}/weights/gan_weights/```
+5. Download the NDF weights for age prediction from [here](https://drive.google.com/file/d/14qzcY89CeO6mbWetfamMWRuRNQ0OHpxY/view?usp=sharing) and extract it to the ```${root}/weights/age_prediction/```.
 
-7. If you want to use BSRGAN, Download the BSRGAN weights from [here](https://drive.google.com/file/d/15PEIICDU3ZNFFoiIMuBIpqch7dncQNFb/view?usp=sharing) and extract it to the ```${root}/weights/gender_prediction/```
+6. Download the VGGFace Gender weights from [here](https://drive.google.com/file/d/19axDtqsPmdW7mT_Z8s8ci85YVlTtiyLO/view?usp=sharing) and extract it to the ```${root}/weights/gender_prediction/```
+
+7. If you want to use SwirIR, Download the SwinIR weights from [here](https://drive.google.com/file/d/1t0eAgSiZphK_WyWZY-y2WHyHkgQfjmDL/view?usp=sharing) and extract it to the ```${root}/weights/gan_weights/```
+
+8. If you want to use BSRGAN, Download the BSRGAN weights from [here](https://drive.google.com/file/d/15PEIICDU3ZNFFoiIMuBIpqch7dncQNFb/view?usp=sharing) and extract it to the ```${root}/weights/gan_weights/```
 
 # How To Run
 
