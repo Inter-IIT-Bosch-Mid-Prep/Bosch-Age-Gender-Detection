@@ -87,7 +87,7 @@ def scale_coords_landmarks(img1_shape, coords, img0_shape, ratio_pad=None):
 
 def show_results(img, xywh_c, conf, landmarks, class_num, j, img_path, sr_model, age_gender, sr, frame_num, output_dict, age_gender_detector, device, gender_model, gender_pred, age_model, age_pred, model_deblur):
     
-
+    # sr = 1
     img_conc = []
     num = 0
     

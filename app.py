@@ -114,14 +114,14 @@ def main():
             self.video_image =  image_file
             # self.img-size = 640
             self.weights_gan = [
-                                "./weights/edsr_weights/weights.h5"
+                                "./weights/gan_weights/weights.h5"
                                 ]
             #self.weights_espcn = 
             self.output_folder = "output_frames"
             self.facelib = True
             self.bic_inter = 0
             self.deblur_weights = "./weights/deblur/model_deblurring.pth"
-            self.deblur_type = 2
+            self.deblur_type = 0
             self.gender_pred = 0
             self.gender_weights = "./weights/gender_prediction/gender_model_weights.h5"
             self.age_pred = 0
@@ -250,7 +250,7 @@ def main():
               
               # Save Frame by Frame into disk using imwrite method
               #cv2.imwrite("/content/drive/MyDrive/INTER_IIT_DRIVE/yolov5-face/test_frames/" + 'Frame'+str(i)+'.jpg',frame)
-              output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan[opt.bic_inter], output_folder=opt.output_folder, frame_num=i, age_gender = opt.facelib, sr = opt.bic_inter, model_deblur=model_deblur, deblur_type=opt.deblur_type, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
+              output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan[opt.bic_inter], output_folder=opt.output_folder, frame_num=i, age_gender = opt.facelib, sr = 1, model_deblur=model_deblur, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
               i += 1
               #print(i)
               #cv2.imshow('frames',frame)
@@ -262,7 +262,7 @@ def main():
       else:
           img = load_image(image_file)
           frame = np.array(img)
-          output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan[opt.bic_inter], output_folder=opt.output_folder, frame_num=0, age_gender = opt.facelib, sr = opt.bic_inter, model_deblur=model_deblur, deblur_type=opt.deblur_type, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
+          output_dict = detect_face.detect_one(model, frame, device, depth=16, scale=4, model_gan_path=opt.weights_gan[opt.bic_inter], output_folder=opt.output_folder, frame_num=0, age_gender = opt.facelib, sr = 1, model_deblur=model_deblur, output_dict=output_dict, model_gan=model_gan, age_gender_detector=age_gender_detector, gender_model = gender_model, gender_pred=opt.gender_pred, age_model = age_model, age_pred=opt.age_pred)
 
 
 

@@ -59,6 +59,7 @@ To run the entire pipeline on a single video you can use the below command
 
 ```bash
 python detect.py --run_on_image <BOOL TO RUN ON IMAGE OR VIDEO>
+                 --save_csv_location <PATH TO SAVE CSV OUTPUT>
                  --weights_yolo <PATH_TO_WEIGHTS_of_YOLO_V5>
                  --video_image <PATH_TO_VIDEO>
                  --img-size  <INFERENCE_SIZE_IN_PIXELS>  
@@ -92,6 +93,7 @@ We have provided support for 3 kinds of SR algorithms - EDSR, SWINIR and BSRGAN.
 2. (SwinIR)
 3. (BSRGAN)
  
+By default the output will be make in the ${root} directory in the name of name_csv_file.csv
 
 # Evaluation Datasets
 
