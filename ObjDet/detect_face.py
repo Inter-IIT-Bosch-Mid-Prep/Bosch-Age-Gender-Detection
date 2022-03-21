@@ -30,8 +30,8 @@ from Super_Resolution.bicubic_pytorch import core
 
 from age_gender_prediction import age_gender_pred_deepface
 
-from facelib import FaceDetector, AgeGenderEstimator
-from age_gender_prediction import age_gender_pred_facelib
+# from facelib import FaceDetector, AgeGenderEstimator
+# from age_gender_prediction import age_gender_pred_facelib
 
 from Deblur.MPRNet.deblurring import restore
 from Denoising.Restormer.Motion_Deblurring.mot_deblur import mot_deblur

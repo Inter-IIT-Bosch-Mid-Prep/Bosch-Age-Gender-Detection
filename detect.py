@@ -37,8 +37,8 @@ from Super_Resolution.sr_gan.model.edsr import edsr
 from Super_Resolution.sr_gan.model.common import resolve_single
 
 from Super_Resolution.bicubic_pytorch import core
-from facelib import FaceDetector, AgeGenderEstimator
-from age_gender_prediction import age_gender_pred_facelib
+# from facelib import FaceDetector, AgeGenderEstimator
+# from age_gender_prediction import age_gender_pred_facelib
 from deepface import DeepFace
 
 from age_gender_prediction.VGGFACE.vgg16_model import gender_model
